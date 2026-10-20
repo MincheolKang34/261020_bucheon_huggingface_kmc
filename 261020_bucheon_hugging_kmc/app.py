@@ -55,7 +55,7 @@ review_ui = gr.Interface(
     inputs=gr.Textbox(lines=6, label="리뷰 입력 (한 줄에 리뷰 하나)"),
     outputs=gr.Dataframe(headers=["리뷰", "별점", "점수(1~5)", "확신도"], label="결과"),
     title="리뷰 감성 분석기",
-    description=f"모델: {MODEL_NAME} (Hugging Face Inference API)",
+    description="리뷰의 감성을 분석하여 추정 별점(1~5점)을 보여주는 프로그램입니다. 리뷰를 한 줄에 하나씩 적어주세요.",
     examples=[["배송도 빠르고 품질도 훌륭해요!\n너무 실망스럽고 다시는 안 살 거예요."]],
     allow_flagging="never",
 )
