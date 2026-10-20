@@ -74,4 +74,4 @@ with gr.Blocks() as demo:
     stop_btn.click(shutdown, outputs=stop_msg)
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(inbrowser=True)  # 실행하면 브라우저를 자동으로 연다
