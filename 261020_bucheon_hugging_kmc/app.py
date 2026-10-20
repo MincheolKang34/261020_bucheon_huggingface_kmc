@@ -1,16 +1,40 @@
+import getpass
 import os
 import threading
 
 import gradio as gr
-from dotenv import load_dotenv
-from huggingface_hub import InferenceClient
+from dotenv import load_dotenv, set_key
+from huggingface_hub import InferenceClient, whoami
 
-load_dotenv()
+ENV_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+load_dotenv(ENV_PATH)
 MODEL_NAME = os.getenv("MODEL_NAME", "nlptown/bert-base-multilingual-uncased-sentiment")
+
+
+def ensure_token(env_path=ENV_PATH, max_tries=3):
+    """HF_TOKEN이 없으면 입력받아 검증한 뒤 .env에 저장하고, 있으면 그대로 사용."""
+    token = os.getenv("HF_TOKEN", "").strip()
+    if token:
+        return token
+    print("HF_TOKEN이 설정되어 있지 않습니다.")
+    print("https://huggingface.co/settings/tokens 에서 토큰을 발급받아 붙여넣으세요.")
+    for _ in range(max_tries):
+        token = getpass.getpass("HF_TOKEN (입력 내용은 화면에 표시되지 않습니다): ").strip()
+        try:
+            whoami(token=token)
+        except Exception:
+            print("유효하지 않은 토큰입니다. 다시 입력해 주세요.")
+            continue
+        set_key(env_path, "HF_TOKEN", token)
+        os.environ["HF_TOKEN"] = token
+        print(f"토큰을 확인하고 {os.path.basename(env_path)}에 저장했습니다.")
+        return token
+    raise SystemExit("토큰 입력에 실패했습니다. 토큰을 확인한 뒤 다시 실행해 주세요.")
+
 
 client = InferenceClient(
     provider="hf-inference",
-    api_key=os.environ["HF_TOKEN"],
+    api_key=ensure_token(),
 )
 
 

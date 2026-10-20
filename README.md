@@ -9,20 +9,28 @@ Hugging Face **Inference API**(`huggingface_hub.InferenceClient`)로 만든 **�
 
 ## 사전 준비
 
-1. https://huggingface.co/settings/tokens 에서 토큰을 발급합니다 (Inference Providers 호출 권한 필요).
-2. 아래 `.env`의 `HF_TOKEN`에 넣습니다.
+https://huggingface.co/settings/tokens 에서 토큰을 발급합니다 (Inference Providers 호출 권한 필요).
+`.env`를 직접 편집할 필요는 없습니다. 처음 실행할 때 토큰이 없으면 앱이 입력을 요청합니다.
 
-## 설치
+## 빠른 시작 (원클릭)
+
+```bash
+cd 261020_bucheon_hugging_kmc
+run.bat          # Windows: 더블클릭도 가능
+bash run.sh      # macOS/Linux, 또는 Windows의 Git Bash
+```
+
+`run.bat`(Windows) 또는 `run.sh` 하나로 **가상환경 생성 → 의존성 설치 → 앱 실행**까지 자동으로 진행합니다 .
+처음 한 번만 설치 시간이 걸리고, 이후 실행은 빠릅니다. `HF_TOKEN`이 없으면 실행 중에 입력을 요청합니다.
+
+## 수동 설치
 
 ```bash
 cd 261020_bucheon_hugging_kmc
 python -m venv venv
 venv\Scripts\activate        # macOS/Linux: source venv/bin/activate
 pip install -r requirements.txt
-copy .env.example .env       # macOS/Linux: cp .env.example .env
 ```
-
-`.env`를 열어 `HF_TOKEN=hf_xxxxx` 로 채웁니다.
 
 > Windows에서 경로가 길어 설치 중 `.pyc` 관련 오류가 나면 `pip install --no-compile -r requirements.txt` 를 사용하세요.
 
@@ -32,6 +40,8 @@ copy .env.example .env       # macOS/Linux: cp .env.example .env
 python app.py
 ```
 
+`HF_TOKEN`이 없으면 터미널에서 토큰 입력을 요청합니다. 붙여넣고 Enter를 누르면 유효성을 확인한 뒤 `.env`에 자동 저장하므로, 다음 실행부터는 묻지 않습니다 (잘못 입력하면 최대 3번까지 다시 입력).
+
 브라우저에서 http://127.0.0.1:7860 접속 → 리뷰를 **한 줄에 하나씩** 입력 후 Submit.
 사용이 끝나면 화면 하단의 **서버 종료** 버튼으로 서버를 끌 수 있습니다 (터미널에서는 `Ctrl+C`).
 
@@ -39,7 +49,7 @@ python app.py
 
 | 변수 | 설명 | 기본값 |
 |---|---|---|
-| `HF_TOKEN` | Hugging Face 액세스 토큰 (**필수**) | - |
+| `HF_TOKEN` | Hugging Face 액세스 토큰 (없으면 실행 시 입력받아 자동 저장) | - |
 | `MODEL_NAME` | 호출할 모델 ID | `nlptown/bert-base-multilingual-uncased-sentiment` |
 
 `.env`는 `.gitignore`로 제외되며, 공유용 템플릿은 `.env.example`입니다.
@@ -50,6 +60,7 @@ python app.py
 README.md
 261020_bucheon_hugging_kmc/
 ├─ app.py            Gradio 앱 (InferenceClient.text_classification 호출)
+├─ run.bat / run.sh  원클릭 실행 스크립트 (설치 + 실행)
 ├─ requirements.txt  의존성
 └─ .env.example      환경변수 템플릿
 ```
