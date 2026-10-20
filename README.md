@@ -36,9 +36,14 @@ pip install -r requirements.txt
 
 ## 실행
 
+가상환경(`venv`)을 활성화한 뒤 실행해야 합니다. 활성화하지 않고 `python app.py`만 실행하면 시스템 Python을 사용해 `gradio` 모듈을 찾지 못합니다.
+
 ```bash
+venv\Scripts\activate        # macOS/Linux: source venv/bin/activate
 python app.py
 ```
+
+활성화 없이 한 번에 실행하려면 `venv\Scripts\python app.py` 또는 `run.bat`/`run.sh`를 사용하세요.
 
 `HF_TOKEN`이 없으면 터미널에서 토큰 입력을 요청합니다. 붙여넣고 Enter를 누르면 유효성을 확인한 뒤 `.env`에 자동 저장하므로, 다음 실행부터는 묻지 않습니다 (잘못 입력하면 최대 3번까지 다시 입력).
 
